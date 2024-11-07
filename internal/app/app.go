@@ -3,10 +3,13 @@ package app
 import (
 	"os"
 	"walletapp/config"
+
+	"github.com/rs/zerolog"
 )
 
 // App represents whole application at its highest level (( of abstraction )).
 type App struct {
+	l *zerolog.Logger
 }
 
 // Run is a shortcut for app.New(cfg).Run(),
@@ -38,7 +41,10 @@ func Run(cfg config.Config) {
 //
 // Considered as Safe.
 func New(cfg config.Config) *App {
-	ap := &App{}
+	l := zerolog.New(os.Stdout)
+	ap := &App{
+		l: &l,
+	}
 
 	return ap
 }

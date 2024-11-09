@@ -10,6 +10,17 @@ import (
 // Represents expected contents of configuration file.
 type Config struct {
 	WORKSPACE string `env:"WORKSPACE" env-required:"true"`
+	Database
+}
+type Database struct {
+	DBUser
+	DBAddress string `env:"DBAddress" env-required:"true"`
+	DBPort    string `env:"DBPort"    env-required:"true"`
+	DBName    string `env:"DBName"    env-required:"true"`
+}
+type DBUser struct {
+	DBRole     string `env:"DBRole"     env-required:"true"`
+	DBPassword string `env:"DBPassword" env-required:"true"`
 }
 
 // Get reads from CONFIG_FILE.

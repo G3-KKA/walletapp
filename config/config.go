@@ -8,9 +8,15 @@ import (
 )
 
 // Represents expected contents of configuration file.
-type Config struct {
-	WORKSPACE string `env:"WORKSPACE" env-required:"true"`
-}
+type (
+	Config struct {
+		WORKSPACE string `env:"WORKSPACE" env-required:"true"`
+		HTTPServer
+	}
+	HTTPServer struct {
+		Address string `env:"HTTP_ADDRESS"`
+	}
+)
 
 // Get reads from CONFIG_FILE.
 // Return config or zero value config and error.

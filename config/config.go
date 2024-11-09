@@ -11,6 +11,7 @@ import (
 type Config struct {
 	WORKSPACE string `env:"WORKSPACE" env-required:"true"`
 	Database
+	HTTPServer
 }
 type Database struct {
 	DBUser
@@ -21,6 +22,10 @@ type Database struct {
 type DBUser struct {
 	DBRole     string `env:"DBRole"     env-required:"true"`
 	DBPassword string `env:"DBPassword" env-required:"true"`
+}
+
+type HTTPServer struct {
+	Address string `env:"HTTP_ADDRESS" env-required:"true"`
 }
 
 // Get reads from CONFIG_FILE.

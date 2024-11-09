@@ -1,15 +1,25 @@
 package app
 
 import (
+	"context"
 	"os"
 	"walletapp/config"
+	"walletapp/internal/httpctl"
 
+	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 )
 
+//go:generate mockery --filename=mock_controller.go --name=Controller --dir=. --structname=MockController --outpkg=mock_app
+type Controller interface {
+	Serve(ctx context.Context) error
+	Shutdown(ctx context.Context) error
+}
+
 // App represents whole application at its highest level (( of abstraction )).
 type App struct {
-	l *zerolog.Logger
+	ctl Controller
+	l   *zerolog.Logger
 }
 
 // Run is a shortcut for app.New(cfg).Run(),
@@ -41,9 +51,15 @@ func Run(cfg config.Config) {
 //
 // Considered as Safe.
 func New(cfg config.Config) *App {
+
 	l := zerolog.New(os.Stdout)
+
+	eng := gin.New()
+
+	httpctl.New(&l, cfg.HTTPServer, eng)
 	ap := &App{
-		l: &l,
+		ctl: nil,
+		l:   &l,
 	}
 
 	return ap
@@ -67,7 +83,8 @@ func New(cfg config.Config) *App {
 // interacted with are ready to re-use,
 // or have the same "state" as it was on previous Run() call.
 func (ap *App) Run() error {
-	var err error
+
+	err := ap.ctl.Serve(context.TODO())
 
 	if err != nil {
 

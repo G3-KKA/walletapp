@@ -355,7 +355,9 @@ linters-settings:
     #  - truncateCmp
     # Which checks should be disabled; can't be combined with 'enabled-checks'.
     # Default: []
-    disabled-checks: []
+    disabled-checks: #### 
+      - hugeParam
+    
     #### Если включить все чеки через enabled-tags
     #### То можно вырубить те единицы что мне не нравятся вот тут (работает, проверено)
     # - regexpMust

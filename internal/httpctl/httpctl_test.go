@@ -12,6 +12,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Gin design is insane, you either do NON-Parallel tests, or you see those,
+// not that handsome messages from gin-debug, that solution is thread-safe and works.
+//
+// Hint: it should be put in every test that uses gin.
+//
+// It SHOULDNT affect production code because test functions are not compiled into
+// any build of actual program.
+var _ = func() struct{} { gin.SetMode(gin.ReleaseMode); return struct{}{} }()
+
 const (
 	// httpctl_test actually uses port, might come with the problems.
 	//
@@ -24,8 +33,6 @@ const (
 )
 
 func TestHTTPCtl(t *testing.T) {
-
-	// t.Parallel() potentially dangerous.
 
 	if _IngorePotentiallyDangerousTest {
 		t.SkipNow()
